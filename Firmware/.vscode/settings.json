@@ -205,5 +205,8 @@
 		"/opt/esp32/esp-idf/components/esp_system/include",
 		"/opt/esp32/esp-idf/components/esp_system/port/include",
 		"/opt/esp32/esp-idf/components/heap/include"
-	]
+	],
+	"files.associations": {
+		"algorithm": "c"
+	}
 }

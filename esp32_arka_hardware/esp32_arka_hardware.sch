@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:esp32_arka_hardware-cache
 EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
@@ -132,4 +133,15 @@ Text Label 10150 900  2    50   ~ 0
 GND
 Text Label 10150 800  2    50   ~ 0
 3V3
+$Comp
+L Transistor_BJT:BC847 Q?
+U 1 1 5F041241
+P 8900 1500
+F 0 "Q?" H 9091 1546 50  0000 L CNN
+F 1 "BC847" H 9091 1455 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 9100 1425 50  0001 L CIN
+F 3 "http://www.infineon.com/dgdl/Infineon-BC847SERIES_BC848SERIES_BC849SERIES_BC850SERIES-DS-v01_01-en.pdf?fileId=db3a304314dca389011541d4630a1657" H 8900 1500 50  0001 L CNN
+	1    8900 1500
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
