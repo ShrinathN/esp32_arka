@@ -207,6 +207,8 @@
 		"/opt/esp32/esp-idf/components/heap/include"
 	],
 	"files.associations": {
-		"algorithm": "c"
+		"algorithm": "c",
+		"*.ipp": "c",
+		"functional": "c"
 	}
 }

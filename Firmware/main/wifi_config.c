@@ -8,7 +8,7 @@
 **/
 void connect_wifi_function()
 {
-	const char * TAG = "connect_wifi_function";
+	const char *TAG = "connect_wifi_function";
 	ESP_LOGI(TAG, "Running!");
 	//creating netif, and event loop
 	ESP_ERROR_CHECK(esp_netif_init());
@@ -24,8 +24,7 @@ void connect_wifi_function()
 	wifi_config_t wcfg = {
 		.sta = {
 			.ssid = AP_SSID,
-			.password = AP_PASS
-		},
+			.password = AP_PASS},
 	};
 
 	ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
@@ -43,7 +42,7 @@ void connect_wifi_function()
 **/
 void wifi_event_handler(void *event_handler_arg, esp_event_base_t event_base, int32_t event_id, void *event_data)
 {
-	const char * TAG = "wifi_event_handler";
+	const char *TAG = "wifi_event_handler";
 	ESP_LOGI(TAG, "Running! %s %d", event_base, event_id);
 	if (event_base == WIFI_EVENT)
 	{
