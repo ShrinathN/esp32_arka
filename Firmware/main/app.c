@@ -9,7 +9,10 @@
 **/
 void app_task(void * arg)
 {
+	const char * TAG = "app_task";
+	ESP_LOGI(TAG, "Running!");
 	while(1)
 	{
+		
 	}
 }
