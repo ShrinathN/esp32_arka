@@ -209,6 +209,7 @@
 	"files.associations": {
 		"algorithm": "c",
 		"*.ipp": "c",
-		"functional": "c"
+		"functional": "c",
+		"cstring": "c"
 	}
 }

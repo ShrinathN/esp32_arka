@@ -1,4 +1,6 @@
 #include "app.h"
+#include "web_page.h"
+#include "gpio_config.h"
 
 /**
  * @brief The main application
@@ -8,15 +10,55 @@
 **/
 void app_task(void *arg)
 {
-	char buffer[] = "HTTP/1.1 200 OK\r\n<html><h1>test</h1></html>\r\n\r\n";
 	const char *TAG = "app_task";
 	ESP_LOGI(TAG, "Running!");
+
+	char buffer[1024];
 	http_server_init();
 	socklen_t siz = sizeof(struct sockaddr_in);
 	while (1)
 	{
-		acceptor_socket = accept(listener_socket, (struct sockaddr*)&remote, &siz);
-		write(acceptor_socket, buffer, strlen(buffer));
+		ESP_LOGI(TAG, "Listening!");
+		acceptor_socket = accept(listener_socket, (struct sockaddr *)&remote, &siz);
+		ESP_LOGI(TAG, "Accepted connection! "IPSTR, IP2STR(remote.sin_addr.s_addr));
+
+		bzero(buffer, sizeof(buffer));
+		recv(acceptor_socket, buffer, sizeof(buffer), 0);
+		ESP_LOGI(TAG, "==============\n%s\n===========", buffer);
+		if (strstr(buffer, "favicon") != NULL) //error
+		{
+			ESP_LOGI(TAG, "Favicon, 404!");
+			send(acceptor_socket, error_response, strlen(error_response), SOCK_DGRAM);
+		}
+		else if (strstr(buffer, "event") != NULL) //event
+		{
+			ESP_LOGI(TAG, "Event!");
+			int rc;
+			char smallbuff[10];
+			while (1)
+			{
+				bzero(buffer, sizeof(buffer));
+				strcat(buffer, event_response);
+				sprintf(smallbuff, "%d", GPIO_get_voltage());
+				strcat(buffer, smallbuff);
+				send(acceptor_socket, buffer, strlen(buffer), 0);
+				ESP_LOGI(TAG, "Sending this!!!\n%s\n\n", buffer);
+				bzero(buffer, sizeof(buffer));
+				rc = recv(acceptor_socket, buffer, 1, O_NONBLOCK);
+				ESP_LOGI(TAG, "RECV!! %d %s", rc, buffer);
+				if(rc < 0)
+				{
+					break;
+				}
+				vTaskDelay(pdMS_TO_TICKS(1000));
+			}
+		}
+		else
+		{
+			ESP_LOGI(TAG, "Web page request!");
+			send(acceptor_socket, page_data, strlen(page_data), 0);	
+		}
+		
 		shutdown(acceptor_socket, SHUT_RDWR);
 	}
 }
