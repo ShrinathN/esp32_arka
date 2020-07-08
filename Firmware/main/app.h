@@ -13,6 +13,7 @@
 int listener_socket; //to listen for incoming connections
 int acceptor_socket; //to accept connections
 struct sockaddr_in info;
+struct sockaddr_in remote;
 
 //public functions
 

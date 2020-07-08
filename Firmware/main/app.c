@@ -8,12 +8,16 @@
 **/
 void app_task(void *arg)
 {
+	char buffer[] = "HTTP/1.1 200 OK\r\n<html><h1>test</h1></html>\r\n\r\n";
 	const char *TAG = "app_task";
 	ESP_LOGI(TAG, "Running!");
 	http_server_init();
+	socklen_t siz = sizeof(struct sockaddr_in);
 	while (1)
 	{
-		
+		acceptor_socket = accept(listener_socket, (struct sockaddr*)&remote, &siz);
+		write(acceptor_socket, buffer, strlen(buffer));
+		shutdown(acceptor_socket, SHUT_RDWR);
 	}
 }
 
@@ -29,7 +33,7 @@ void http_server_init(void)
 	info.sin_addr.s_addr = htonl(INADDR_ANY);
 	info.sin_family = AF_INET;
 	info.sin_port = htons(HTTP_SERVER_PORT);
-	setsockopt(listener_socket, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &one, sizeof(one));
+	setsockopt(listener_socket, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(one));
 	bind(listener_socket, (struct sockaddr *)&info, sizeof(info));
 	listen(listener_socket, 10);
 }
