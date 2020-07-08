@@ -20,11 +20,11 @@ void app_task(void *arg)
 	{
 		ESP_LOGI(TAG, "Listening!");
 		acceptor_socket = accept(listener_socket, (struct sockaddr *)&remote, &siz);
-		ESP_LOGI(TAG, "Accepted connection! "IPSTR, IP2STR(remote.sin_addr.s_addr));
+		ESP_LOGI(TAG, "Accepted connection!");
 
 		bzero(buffer, sizeof(buffer));
 		recv(acceptor_socket, buffer, sizeof(buffer), 0);
-		ESP_LOGI(TAG, "==============\n%s\n===========", buffer);
+		// ESP_LOGI(TAG, "==============\n%s\n===========", buffer);
 		if (strstr(buffer, "favicon") != NULL) //error
 		{
 			ESP_LOGI(TAG, "Favicon, 404!");
@@ -41,16 +41,15 @@ void app_task(void *arg)
 				strcat(buffer, event_response);
 				sprintf(smallbuff, "%d", GPIO_get_voltage());
 				strcat(buffer, smallbuff);
-				send(acceptor_socket, buffer, strlen(buffer), 0);
-				ESP_LOGI(TAG, "Sending this!!!\n%s\n\n", buffer);
+				rc = send(acceptor_socket, buffer, strlen(buffer), 0);
+				ESP_LOGI(TAG, "Sent this!!!%d\n%s\n\n", rc, buffer);
 				bzero(buffer, sizeof(buffer));
-				rc = recv(acceptor_socket, buffer, 1, O_NONBLOCK);
-				ESP_LOGI(TAG, "RECV!! %d %s", rc, buffer);
 				if(rc < 0)
 				{
+					ESP_LOGI(TAG, "Disconnected! %d", rc);
 					break;
 				}
-				vTaskDelay(pdMS_TO_TICKS(1000));
+				vTaskDelay(pdMS_TO_TICKS(500));
 			}
 		}
 		else
