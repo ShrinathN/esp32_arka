@@ -7,7 +7,7 @@
 			"label": "Make and flash",
 			"type": "shell",
 			"command": "make & make flash",
-			"options": {"cwd": "Firmware"},
+			"options": {"cwd": "${cwd}"},
 			"group": "build"
 		}
 	]

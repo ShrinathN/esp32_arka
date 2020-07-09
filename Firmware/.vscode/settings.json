@@ -213,11 +213,4 @@
 		"cstring": "c"
 	},
 	"C_Cpp.default.compileCommands": "make && make flash",
-	"launch": {
-		"configurations": [],
-		"compounds": [{
-			"name": "Compound",
-			"configurations": [{"folder": "Firmware","}]
-		}]
-	}
 }

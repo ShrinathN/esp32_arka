@@ -42,22 +42,23 @@ void app_task(void *arg)
 				sprintf(smallbuff, "%d", GPIO_get_voltage());
 				strcat(buffer, smallbuff);
 				rc = send(acceptor_socket, buffer, strlen(buffer), 0);
-				ESP_LOGI(TAG, "Sent this!!!%d\n%s\n\n", rc, buffer);
 				bzero(buffer, sizeof(buffer));
-				if(rc < 0)
+				ESP_LOGI(TAG, "ADC->%s", smallbuff);
+				bzero(smallbuff, sizeof(smallbuff));
+				if (rc < 0)
 				{
 					ESP_LOGI(TAG, "Disconnected! %d", rc);
 					break;
 				}
-				vTaskDelay(pdMS_TO_TICKS(500));
+				vTaskDelay(pdMS_TO_TICKS(200));
 			}
 		}
 		else
 		{
 			ESP_LOGI(TAG, "Web page request!");
-			send(acceptor_socket, page_data, strlen(page_data), 0);	
+			send(acceptor_socket, page_data, strlen(page_data), 0);
 		}
-		
+
 		shutdown(acceptor_socket, SHUT_RDWR);
 	}
 }
