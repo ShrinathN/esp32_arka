@@ -18,7 +18,7 @@ void app_task(void *arg)
 	socklen_t siz = sizeof(struct sockaddr_in);
 	while (1)
 	{
-		ESP_LOGI(TAG, "Listening!");
+		ESP_LOGI(TAG, "Listening! Free Heap: %d", esp_get_free_heap_size());
 		acceptor_socket = accept(listener_socket, (struct sockaddr *)&remote, &siz);
 		ESP_LOGI(TAG, "Accepted connection!");
 

@@ -31,6 +31,7 @@ void app_main(void)
 		nvs_flash_erase();
 		nvs_flash_init();
 	}
+	ESP_LOGI(TAG, "Free Heap: %d", esp_get_free_heap_size());
 
 	//configuring pm
 	esp_pm_configure(&pm_confg);
